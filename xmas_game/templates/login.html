@@ -1,0 +1,16 @@
+<!doctype html>
+<title>Let's Elect Santa!</title>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+<div class=page>
+  <h1>Let's Elect Santa!</h1>
+  <h2>Login</h2>
+  <form action="{{url_for('login')}}" method=post class=login>
+    <dl>
+      <dt>Username:</dt>
+      <dd><input type=text size=30 name=username></dd>
+      <dt>Password:</dt>
+      <dd><input type=text size=30 name=password</dd>
+		 </dl>
+  </form>
+  <a href="{{ url_for('sign_up_screen') }}">Create Account!</a>  		 		   
+</div>  

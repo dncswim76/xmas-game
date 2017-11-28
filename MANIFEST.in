@@ -1,0 +1,3 @@
+graft xmas_game/templates
+graft xmas_game/static
+include xmas_game/schema.sql
