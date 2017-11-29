@@ -63,3 +63,5 @@ target/
 
 # Project Specific Ignores
 app/static/media/*
+
+*~

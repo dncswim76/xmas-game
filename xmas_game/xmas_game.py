@@ -305,17 +305,17 @@ def index():
 
     #determine if the user already logged in using a cookie
     session_id = request.cookies.get('session_id')
-    if not logged_in(int(session_id)):
-        return redirect(url_for('login_screen'))
-    else:
+    if session_id != None and logged_in(int(session_id)):
         return redirect(url_for('join_game'))
+    else:
+        return redirect(url_for('login_screen'))
         
 @app.route('/login', methods=['GET', 'POST'])
 def login_screen():
 
     #if user is already logged in redirect
     session_id = request.cookies.get('session_id')
-    if logged_in(int(session_id)):
+    if session_id != None and logged_in(int(session_id)):
         return redirect(url_for('index'))
 
     if request.method == 'POST':
@@ -513,6 +513,6 @@ def list_users_screen():
     
 
 if __name__ == "__main__":
-        app.run(debug=True)
+        app.run(host='0.0.0.0', port=33, debug=True)
 
         
