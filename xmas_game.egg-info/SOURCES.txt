@@ -1,9 +1,0 @@
-MANIFEST.in
-xmas_game/__init__.py
-xmas_game/schema.sql
-xmas_game/xmas_game.py
-xmas_game.egg-info/PKG-INFO
-xmas_game.egg-info/SOURCES.txt
-xmas_game.egg-info/dependency_links.txt
-xmas_game.egg-info/requires.txt
-xmas_game.egg-info/top_level.txt
