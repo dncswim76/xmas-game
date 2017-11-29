@@ -32,17 +32,17 @@ SESSION_ID = 1
 ## SETUP
 #################################################################
 
-app =Flask(__name__)
-app.config.from_object(__name__)
-
-app.config.update(dict(
-    DATABASE=os.path.join(app.root_path, 'xmas_game.db'),
-    SECRET_KEY='development key',
-    USERNAME='admin',
-    PASSWORD='default'
-    ))
-
-app.config.from_envvar('XMAS_GAME_SETTINGS', silent=True)
+#app =Flask(__name__)
+#app.config.from_object(__name__)
+#
+#app.config.update(dict(
+#    DATABASE=os.path.join(app.root_path, 'xmas_game.db'),
+#    SECRET_KEY='development key',
+#    USERNAME='admin',
+#    PASSWORD='default'
+#    ))
+#
+#app.config.from_envvar('XMAS_GAME_SETTINGS', silent=True)
 
 
 #################################################################

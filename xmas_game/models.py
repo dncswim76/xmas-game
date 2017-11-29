@@ -1,8 +1,9 @@
-from app import db
+from xmas_game import db
 from flask import session
 from werkzeug.security import check_password_hash, generate_password_hash
 
-class User(db.Model)
+
+class User(db.Model):
 
     __tablename__ = 'users'
 
@@ -67,28 +68,28 @@ class Settings(db.Model):
         return self.config_var
 
 
-class Round(db.Model)
+class Round(db.Model):
 
     __tablename__ = 'rounds'
 
     id = db.Column(
         'id', db.Integer, primary_key=True)
     round_name = db.Column(
-        'round_name', db.string(50))
+        'round_name', db.String(50))
 
     
-class Vote(db.Model)
+class Vote(db.Model):
 
     __tablename__ = 'votes'
 
     id = db.Column(
         'id', db.Integer, primary_key=True)
     player = db.Column(
-        'id', db.Integer, db.ForeignKey('players.id')
+        'player_id', db.Integer, db.ForeignKey('players.id'))
     voting_round = db.Column(
-        'voting_round', db.Integer, db.ForeignKey('rounds.id')
+        'round_id', db.Integer, db.ForeignKey('rounds.id'))
     vote = db.Column(
-        'vote', db.Integer, db.ForeignKey('players.id')    
+        'votee_id', db.Integer, db.ForeignKey('players.id'))
 
         
 class Player(db.Model):
@@ -96,7 +97,5 @@ class Player(db.Model):
     __tablename__ = 'players'
 
     id = db.Column('id', db.Integer, primary_key=True)
-    user_id = db.Column('User', db.Integer, db.ForeignKey('users.id')
+    user_id = db.Column('User', db.Integer, db.ForeignKey('users.id'))
     player_role = db.Column('player_role', db.String(10))
-
-    
