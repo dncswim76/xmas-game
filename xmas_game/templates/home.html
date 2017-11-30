@@ -1,12 +1,13 @@
-{% extends "header.hmtl" %}
+{% extends "header.html" %}
 
 {% block content %}
 
 <div class="container-fluid">
+  
 {% if   game_state_setting.value == 'STATE_ENTER'  %}
 
 <p> Welcome! Click Below to join the game </p>
-<a href="{{ url_for('/join_game')"><button type="button" class="btn">Join Game!</button></a>
+<a href="{{ url_for('/join_game')}}"><button type="button" class="btn">Join Game!</button></a>
 {% endif %}
 
 </div>

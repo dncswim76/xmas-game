@@ -1,4 +1,6 @@
 from flask import flash, g, jsonify, redirect, render_template, request, session, url_for
+from sqlalchemy import text
+from xmas_game import app, db
 
 from .models import Setting, Round, User, Vote, Player
 
@@ -11,8 +13,8 @@ def home():
     #first round.  It will also show the final winner of the game and
     #indicate if they are naughty or nice
 
-    game_state_setting = Settings.query.filter(Settings.config_var='game_state')
-    game_round_setting = Settings.query.filter(Settings.config_var='game_round')
+    game_state_setting = Setting.query.filter(Setting.config_var=='game_state')
+    game_round_setting = Setting.query.filter(Setting.config_var=='game_round')
     
     return render_template('home.html', game_state_setting=game_state_setting)
 
@@ -25,6 +27,7 @@ def login():
 
 @app.route('/join_game')
 def join_game():
+    pass
 
 
 @app.route('/logout')
