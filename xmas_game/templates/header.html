@@ -1,12 +1,11 @@
-<html>
-<head>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
+
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">Let's Elect Santa!</a>
+      <a class="navbar-brand" href="#">Holiday Game</a>
     </div>
     <ul class="nav navbar-nav">
       <li><a href="{{ url_for('home')}}">Home</a></li>
@@ -17,8 +16,6 @@
     </ul>
   </div>
 </nav>
-</body>
-</html>
 
-
+{% endblock %}
   
