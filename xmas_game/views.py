@@ -1,5 +1,7 @@
 from flask import flash, g, jsonify, redirect, render_template, request, session, url_for
 
+from .models import Setting, Round, User, Vote, Player
+
 
 @app.route('/')
 @app.route('/home')
@@ -8,8 +10,11 @@ def home():
     #Home Screen Lists the current game state and the nominees from the
     #first round.  It will also show the final winner of the game and
     #indicate if they are naughty or nice
+
+    game_state_setting = Settings.query.filter(Settings.config_var='game_state')
+    game_round_setting = Settings.query.filter(Settings.config_var='game_round')
     
-    pass
+    return render_template('home.html', game_state_setting=game_state_setting)
 
 @app.route('/login')
 def login():
@@ -17,6 +22,10 @@ def login():
     #login screen will authenticate a user
     
     pass
+
+@app.route('/join_game')
+def join_game():
+
 
 @app.route('/logout')
 def logout():
@@ -33,8 +42,8 @@ def view_players():
     #or not
     pass
 
-@app.route('/my_role/<int:userid>')
-def my_role(userid):
+@app.route('/my_role')
+def my_role():
 
     #indicates the players role when the game allows players to view their roles
     #a role can be naughty or nice.  Naughty people will be shown a list of other

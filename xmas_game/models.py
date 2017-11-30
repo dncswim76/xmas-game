@@ -56,7 +56,7 @@ class User(db.Model):
         return self.username
 
 
-class Settings(db.Model):
+class Setting(db.Model):
 
     __tablename__ = 'settings'
     
