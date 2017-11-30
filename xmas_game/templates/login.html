@@ -1,16 +1,20 @@
-<!doctype html>
-<title>Let's Elect Santa!</title>
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
-<div class=page>
-  <h1>Let's Elect Santa!</h1>
-  <h2>Login</h2>
-  <form action="{{url_for('login_screen')}}" method=post class=login>
-    <dl>
-      <dt>Username:</dt>
-      <dd><input type=text size=30 name=username></dd>
-      <dt>Password:</dt>
-      <dd><input type=text size=30 name=password</dd>
-		 </dl>
-  </form>
-  <a href="{{ url_for('sign_up_screen') }}">Create Account!</a>  		 		   
-</div>  
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="section_title">Login Page</div>
+    <div class="section_title_divider"></div>
+    <div class="section_content">
+        <form action="" method="post" name="login">
+        {{ form.hidden_tag() }}
+        <p>Username: {{ form.username(size=50) }}</p>
+        {% for error in form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        <p>Password:  {{ form.password(size=50) }}</p>
+        {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        <p><input type="submit" value="Login"></p>
+        </form>
+    </div>
+{% endblock %}

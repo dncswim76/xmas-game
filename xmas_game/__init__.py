@@ -13,12 +13,12 @@ app.config.from_object('config')
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 # initialize LoginManager
-#login_manager = LoginManager()
-#login_manager.login_view = 'login'
-#login_manager.init_app(app)
+login_manager = LoginManager()
+login_manager.login_view = 'login'
+login_manager.init_app(app)
 # initialize manager
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
-manager.add_command('runserver', Server)
+manager.add_command('runserver', Server(host="0.0.0.0", port=8000))
 
-from xmas_game import models
+from xmas_game import models, views
