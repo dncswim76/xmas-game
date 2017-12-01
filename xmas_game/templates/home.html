@@ -5,13 +5,13 @@
 <div class="container">
 
 {% if game_state_setting.value == "STATE_ENTER" and not player_joined %}
-  <h1 class="display-1 text-center"> Welcome! Click Below to join the game </h1>
+  <h1 class="display-1 text-center"> Welcome! Click Below to join the game. </h1>
   <a href="{{ url_for('join_game')}}"><button type="button" class="btn">Join Game!</button></a>
 {% elif game_state_setting.value == "STATE_ENTER" and player_joined %}
-  <h1 class="display-1 text-center">The qame will begin soon, please wait for instructions.</h1>
-{% else %}
-  <h1 class="display-1 text-center">Game Entrance is currently closed.</h1>
-{% endif %}
+  <h1 class="display-1 text-center"> Please wait for game to begin! </h1>
+{% else %}  
+  <h1 class="display-1 text-center"> Sorry. Game Entrance has been closed.</h1>
+{% endif %}  
   
 </div>
 

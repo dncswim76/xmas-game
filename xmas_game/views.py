@@ -11,6 +11,10 @@ from .forms import LoginForm
 from .models import User
 
 
+def breakpoint():
+    import pdb
+    pdb.set_trace()
+
 @app.before_request
 def before_request():
     g.user = current_user
@@ -54,6 +58,7 @@ def logout():
     return redirect(url_for('home'))
 
 
+
 @app.route('/')
 @app.route('/home')
 def home():
@@ -65,21 +70,23 @@ def home():
     if not current_user.is_authenticated:        
         return redirect(url_for('login'))    
     else:
-        player_joined = (Player.query.filter(Player.user_id==current_user.id).exists()
-        game_state_setting = Setting.query.filter(Setting.config_var=='game_state').first()
-        game_round_setting = Setting.query.filter(Setting.config_var=='game_round').first()        
+
+        player_joined = Player.query.filter(Player.user_id==current_user.id).first()!=None
+        game_state_setting = Setting.query.filter(Setting.config_var=='game_state')[0]
+        
         return render_template('home.html',
-                               game_state_setting=game_state_setting,
-                               game_round_setting=game_round_setting,
+                               game_state_setting=game_state_setting, 
                                player_joined=player_joined)
 
 @app.route('/join_game')
 def join_game():
-
-    new_player = Player(user_id=current_user.id, player_role=UNASSIGNED)
-
-    db.session.add(player)
-    db.session.commit()
+                             
+    player_joined = Player.query.filter(Player.user_id==current_user.id).first()!=None
+    
+    if not player_joined:      
+        new_player = Player(user_id=current_user.id, role=Player.Roles.UNASSIGNED)
+        db.session.add(new_player)
+        db.session.commit()
     
     return redirect(url_for('home'))
 
@@ -90,7 +97,7 @@ def view_players():
     #if each player has cast their vote for each voting session yet
     #or not
     all_players = Player.query.all()
-    return render_html('view_players.html', all_players=all_players)
+    return render_template('view_players.html', players=all_players)
 
 @app.route('/my_role')
 def my_role():
