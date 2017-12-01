@@ -11,10 +11,6 @@ from .forms import AccountCreateForm, LoginForm
 from .models import User
 
 
-def breakpoint():
-    import pdb
-    pdb.set_trace()
-
 @app.before_request
 def before_request():
     g.user = current_user
@@ -41,8 +37,6 @@ def login():
         next = request.args.get('next')
         return redirect(next or url_for('home'))
     return render_template('login.html', form=form)
-
-
 
 
 @app.route('/logout')
@@ -105,6 +99,7 @@ def join_game():
     
     return redirect(url_for('home'))
 
+
 @app.route('/view_players')
 def view_players():
 
@@ -113,6 +108,7 @@ def view_players():
     #or not
     all_players = Player.query.all()
     return render_template('view_players.html', players=all_players)
+
 
 @app.route('/my_role')
 def my_role():
