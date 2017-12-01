@@ -1,8 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="section_title">Login Page</div>
-    <div class="section_title_divider"></div>
+<div class="section_title"><h2>Login Below or Create an Account</h2></div>
     <div class="section_content">
         <form action="" method="post" name="login">
         {{ form.hidden_tag() }}
@@ -16,5 +15,6 @@
         {% endfor %}
         <p><input type="submit" value="Login"></p>
         </form>
+        <p><button type="button" onclick="window.location.href='{{ url_for('create_account') }}';">Create Account</button></p>
     </div>
 {% endblock %}

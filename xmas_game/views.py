@@ -7,7 +7,7 @@ from .models import Setting, Round, User, Vote, Player
 from flask_login import login_user, logout_user, current_user, login_required
 from xmas_game import app, db, login_manager
 
-from .forms import LoginForm
+from .forms import AccountCreateForm, LoginForm
 from .models import User
 
 
@@ -31,7 +31,6 @@ def login():
     form = LoginForm()
     # process form submission on POST
     if form.validate_on_submit():
-#        flash(u'Successfully logged in as %s' % form.user.username, 'success')
         session['user_id'] = form.user.id
         session['authenticated'] = True
         # check if user has access to next url
@@ -50,8 +49,25 @@ def logout():
     # pop session variables
     session.pop('user_id', None)
     session.pop('authenticated', None)
-#    flash(u'Successfully logged out.', 'success')
     return redirect(url_for('home'))
+
+
+@app.route('/create_account', methods=['GET', 'POST'])
+def create_account():
+    ''' Account creation page.'''
+
+    form = AccountCreateForm(request.form)
+    if form.validate_on_submit():
+        user = User(
+                username=form.username.data,
+                first_name=form.first_name.data,
+                last_name=form.last_name.data,
+                password=form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('login'))
+
+    return render_template('create_account.html', form=form) 
 
 
 @app.route('/')

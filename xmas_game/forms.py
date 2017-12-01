@@ -1,19 +1,19 @@
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from wtforms import PasswordField, TextField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, EqualTo, Length, ValidationError
 from .models import User
 
-class LoginForm(Form):
+class LoginForm(FlaskForm):
     username = TextField('username', validators=[DataRequired()])
     password = PasswordField('password', validators=[DataRequired()])
 
     def __init__(self, *args, **kwargs):
-        Form.__init__(self, *args, **kwargs)
+        FlaskForm.__init__(self, *args, **kwargs)
         self.user = None
 
     def validate(self):
         # validate form submission
-        rv = Form.validate(self)
+        rv = FlaskForm.validate(self)
         if not rv:
             return False
 
@@ -27,4 +27,24 @@ class LoginForm(Form):
             return False
 
         self.user = user
+        return True
+
+
+def unique_username(form, field):
+    if User.query.filter(User.username == field.data).first():
+        raise ValidationError('Username already exists')
+
+
+class AccountCreateForm(FlaskForm):
+    username = TextField('username', validators=[Length(min=4, max=25), unique_username])
+    first_name = TextField('first_name', validators=[Length(min=2, max=25)])
+    last_name = TextField('last_name', validators=[Length(min=2, max=25)])
+    password = PasswordField('password', [
+        DataRequired(),
+        EqualTo('confirm', message='Passwords must match')
+    ])
+    confirm = PasswordField('Repeat Password')
+
+    def validate(self):
+        # validators already do all of the validation, so...
         return True

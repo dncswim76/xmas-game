@@ -18,11 +18,11 @@ class User(db.Model):
         'first_name', db.String(50))
     last_name = db.Column(
         'last_name', db.String(50))
-    phone_number = db.Column(
-        'phone_number', db.String(50))
 
-    def __init__(self, username, password):
+    def __init__(self, username, password, first_name, last_name):
         self.username = username
+        self.first_name = first_name
+        self.last_name = last_name
         self.set_password(password)
 
     @property
