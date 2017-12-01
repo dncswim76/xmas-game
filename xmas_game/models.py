@@ -1,4 +1,5 @@
 from xmas_game import db
+from enum import Enum
 from flask import session
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -96,6 +97,12 @@ class Player(db.Model):
 
     __tablename__ = 'players'
 
+    class Roles(Enum):
+        UNASSIGNED = 0
+        NAUGHTY = 1
+        NICE = 2
+
     id = db.Column('id', db.Integer, primary_key=True)
+    role = db.Column('player_role', db.Enum(Roles), nullable=False)
     user_id = db.Column('User', db.Integer, db.ForeignKey('users.id'))
-    player_role = db.Column('player_role', db.String(10))
+    user = db.relationship(User, backref='users')
