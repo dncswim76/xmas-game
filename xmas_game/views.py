@@ -31,7 +31,7 @@ def login():
     form = LoginForm()
     # process form submission on POST
     if form.validate_on_submit():
-        flash(u'Successfully logged in as %s' % form.user.username, 'success')
+#        flash(u'Successfully logged in as %s' % form.user.username, 'success')
         session['user_id'] = form.user.id
         session['authenticated'] = True
         # check if user has access to next url
@@ -50,7 +50,7 @@ def logout():
     # pop session variables
     session.pop('user_id', None)
     session.pop('authenticated', None)
-    flash(u'Successfully logged out.', 'success')
+#    flash(u'Successfully logged out.', 'success')
     return redirect(url_for('home'))
 
 
@@ -62,10 +62,12 @@ def home():
     #first round.  It will also show the final winner of the game and
     #indicate if they are naughty or nice
 
-    game_state_setting = Setting.query.filter(Setting.config_var=='game_state')
-    game_round_setting = Setting.query.filter(Setting.config_var=='game_round')
-    
-    return render_template('home.html', game_state_setting=game_state_setting)
+    if not current_user.is_authenticated:        
+        return redirect(url_for('login'))    
+    else:
+        game_state_setting = Setting.query.filter(Setting.config_var=='game_state')
+        game_round_setting = Setting.query.filter(Setting.config_var=='game_round')        
+        return render_template('home.html', game_state_setting=game_state_setting)
 
 @app.route('/join_game')
 def join_game():
