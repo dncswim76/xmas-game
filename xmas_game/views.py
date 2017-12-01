@@ -80,8 +80,9 @@ def home():
         return redirect(url_for('login'))    
     else:
 
-        player_joined = Player.query.filter(Player.user_id==current_user.id).first()!=None
-        game_state_setting = Setting.query.filter(Setting.config_var=='game_state')[0]
+        player_joined = Player.query.filter(Player.user_id==current_user.id).first() is not None
+        # this could be an error if the setting does not exist..
+        game_state_setting = Setting.query.filter(Setting.config_var=='game_state').first()
         
         return render_template('home.html',
                                game_state_setting=game_state_setting, 
