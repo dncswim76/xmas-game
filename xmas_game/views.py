@@ -65,12 +65,22 @@ def home():
     if not current_user.is_authenticated:        
         return redirect(url_for('login'))    
     else:
-        game_state_setting = Setting.query.filter(Setting.config_var=='game_state')
-        game_round_setting = Setting.query.filter(Setting.config_var=='game_round')        
-        return render_template('home.html', game_state_setting=game_state_setting)
+        player_joined = (Player.query.filter(Player.user_id==current_user.id).exists()
+        game_state_setting = Setting.query.filter(Setting.config_var=='game_state').first()
+        game_round_setting = Setting.query.filter(Setting.config_var=='game_round').first()        
+        return render_template('home.html',
+                               game_state_setting=game_state_setting,
+                               game_round_setting=game_round_setting,
+                               player_joined=player_joined)
 
 @app.route('/join_game')
 def join_game():
+
+    new_player = Player(user_id=current_user.id, player_role=UNASSIGNED)
+
+    db.session.add(player)
+    db.session.commit()
+    
     return redirect(url_for('home'))
 
 @app.route('/view_players')
@@ -79,7 +89,8 @@ def view_players():
     #takes to a screen where all players are lists, and also indicates
     #if each player has cast their vote for each voting session yet
     #or not
-    pass
+    all_players = Player.query.all()
+    return render_html('view_players.html', all_players=all_players)
 
 @app.route('/my_role')
 def my_role():
