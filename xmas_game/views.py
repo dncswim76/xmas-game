@@ -11,6 +11,10 @@ from .forms import AccountCreateForm, LoginForm
 from .models import User
 
 
+def breakpoint():
+    import pdb
+    pdb.set_trace()
+
 @app.before_request
 def before_request():
     g.user = current_user
@@ -81,12 +85,24 @@ def home():
     if not current_user.is_authenticated:        
         return redirect(url_for('login'))    
     else:
-        game_state_setting = Setting.query.filter(Setting.config_var=='game_state')
-        game_round_setting = Setting.query.filter(Setting.config_var=='game_round')        
-        return render_template('home.html', game_state_setting=game_state_setting)
+
+        player_joined = Player.query.filter(Player.user_id==current_user.id).first()!=None
+        game_state_setting = Setting.query.filter(Setting.config_var=='game_state')[0]
+        
+        return render_template('home.html',
+                               game_state_setting=game_state_setting, 
+                               player_joined=player_joined)
 
 @app.route('/join_game')
 def join_game():
+                             
+    player_joined = Player.query.filter(Player.user_id==current_user.id).first()!=None
+    
+    if not player_joined:      
+        new_player = Player(user_id=current_user.id, role=Player.Roles.UNASSIGNED)
+        db.session.add(new_player)
+        db.session.commit()
+    
     return redirect(url_for('home'))
 
 @app.route('/view_players')
@@ -95,7 +111,8 @@ def view_players():
     #takes to a screen where all players are lists, and also indicates
     #if each player has cast their vote for each voting session yet
     #or not
-    pass
+    all_players = Player.query.all()
+    return render_template('view_players.html', players=all_players)
 
 @app.route('/my_role')
 def my_role():
