@@ -16,7 +16,7 @@ def before_request():
     g.user = current_user
 
 @login_manager.user_loader
-def load_ser(user_id):
+def load_user(user_id):
     return User.query.get(user_id)
 
 
@@ -98,10 +98,3 @@ def vote():
     #one person to cast a vote for.
     #POST - send the id of the person they are voting for
     pass
-
-@app.route('/admin_screen')
-def admin_screen():
-
-    #only the admin can view this section.  allows amdin to contol the state of the game
-    pass
-    
