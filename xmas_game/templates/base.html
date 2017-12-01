@@ -3,7 +3,7 @@
     <title>Holiday Game</title>
     <!-- CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <!--{% block css %}{% endblock %}-->
+    {% block css %}{% endblock %}
     <!-- JavaScript -->
     <script type=text/javascript>
         $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
