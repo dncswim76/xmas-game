@@ -2,16 +2,17 @@
 
 {% block content %}
 
-<div class="row">
-  <div class="col-sm-12" style='background-color: #FF0000;'><h1 class="display-1">Players</h1></div>
-</div>
-
-{% for player in players %}
-
-<div class="row" style='background-color: #00FF00;'>
-  <div class="col-sm-12"> <h2 class="display-1">{{ player.user.first_name }} {{ player.user.last_name }} </h2></div>
-</div>  
-
-{% endfor %}
+<table class="table table-striped">
+    <tr>
+        <th>#</th>
+        <th>Player</th>
+    </tr>
+    {% for player in players %}
+    <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ player.user.first_name }} {{ player.user.last_name }}</td>
+    </tr>
+    {% endfor %}
+</table>
 
 {% endblock %}
