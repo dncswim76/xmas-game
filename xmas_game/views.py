@@ -1,4 +1,8 @@
 from flask import flash, g, jsonify, redirect, render_template, request, session, url_for
+from sqlalchemy import text
+from xmas_game import app, db
+
+from .models import Setting, Round, User, Vote, Player
 
 from flask_login import login_user, logout_user, current_user, login_required
 from xmas_game import app, db, login_manager
@@ -10,7 +14,6 @@ from .models import User
 @app.before_request
 def before_request():
     g.user = current_user
-
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -37,6 +40,8 @@ def login():
     return render_template('login.html', form=form)
 
 
+
+
 @app.route('/logout')
 def logout():
     ''' User logout page.'''
@@ -56,9 +61,15 @@ def home():
     #Home Screen Lists the current game state and the nominees from the
     #first round.  It will also show the final winner of the game and
     #indicate if they are naughty or nice
-    
-    return render_template('j_home.html')
 
+    game_state_setting = Setting.query.filter(Setting.config_var=='game_state')
+    game_round_setting = Setting.query.filter(Setting.config_var=='game_round')
+    
+    return render_template('home.html', game_state_setting=game_state_setting)
+
+@app.route('/join_game')
+def join_game():
+    return redirect(url_for('home'))
 
 @app.route('/view_players')
 def view_players():
@@ -68,8 +79,8 @@ def view_players():
     #or not
     pass
 
-@app.route('/my_role/<int:userid>')
-def my_role(userid):
+@app.route('/my_role')
+def my_role():
 
     #indicates the players role when the game allows players to view their roles
     #a role can be naughty or nice.  Naughty people will be shown a list of other
