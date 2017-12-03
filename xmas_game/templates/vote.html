@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+<div class="container-fluid">
+
+{% if game_state_setting == "STATE_COLLABORATE" or game_state_setting == "STATE_VOTE" %}
+
+<h1 class="display-1 text-center">Vote for Round {{game_round_setting}}</h1>
+
+<form action="{{url_for('vote')}}" method=post>
+<div class="form-group">
+  <label for="exampleFormControlSelect2">Select Player You are Voting for:</label>
+  <select multiple class="form-control" id="selected_vote" name="selected">
+    {% for player in votable_players %}
+    <option value={{player.id}}>{{player.user.first_name}} {{player.user.last_name}}</option>
+    {% endfor %}
+  </select>
+  <input type="submit" value="Submit">
+</div>
+</form>
+
+{% else %}
+
+<h1 class="display-1 text-center">Voting is NOT currently open.</h1>
+
+{% endif %}
+
+
+</div>
+</div>
+
+{% endblock %}

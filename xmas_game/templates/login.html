@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="cotainer">
+<div class="cotainer-fluid">
 <div class="section_title"><h2>Login Below or Create an Account</h2></div>
     <div class="section_content">
         <form action="" method="post" name="login">
@@ -17,4 +19,6 @@
         </form>
         <p><button type="button" onclick="window.location.href='{{ url_for('create_account') }}';">Create Account</button></p>
     </div>
+</div>    
+</div>    
 {% endblock %}

@@ -86,16 +86,21 @@ def home():
         game_round_setting = get_game_round()
 
         round_winners = [None, None, None, None]
-#        round_winners[0] = determine_round_winner(1)
-#        round_winners[1] = determine_round_winner(2)
-#        round_winners[2] = determine_round_winner(3)
-#        round_winners[3] = determine_round_winner(4)
-        
+        round_winners[0] = determine_round_winner(1)
+        round_winners[1] = determine_round_winner(2)
+        round_winners[2] = determine_round_winner(3)
+        round_winners[3] = determine_round_winner(4)
+        if round_winners[3] != None:
+            winner_is_naughty = round_winners[3].role==Player.Roles.NAUGHTY
+        else:
+            winner_is_naughty = False
+            
         return render_template('home.html',
                                game_state_setting=game_state_setting,
                                game_round_setting=game_round_setting, 
                                player_joined=player_joined,
-                               round_winners=round_winners)
+                               round_winners=round_winners,
+                               winner_is_naughty=winner_is_naughty)
 
 @app.route('/join_game')
 def join_game():
@@ -103,7 +108,12 @@ def join_game():
     player_joined = Player.query.filter(Player.user_id==current_user.id).first() is not None
     
     if not player_joined:      
-        new_player = Player(user_id=current_user.id, role=Player.Roles.NICE)
+        new_player = Player(user_id=current_user.id,
+                            role=Player.Roles.NICE, 
+                            voted_round_one="", 
+                            voted_round_two="", 
+                            voted_round_three="", 
+                            voted_round_four="")
         db.session.add(new_player)
         db.session.commit()
     
@@ -142,7 +152,7 @@ def my_role():
                                            game_state=game_state)
 
 
-@app.route('/vote')
+@app.route('/vote', methods=['GET', 'POST'])
 def vote():
 
     #GET - lists all people available to select for this voting round. The users can only select
@@ -152,6 +162,36 @@ def vote():
     player_joined = Player.query.filter(Player.user_id==current_user.id).first() is not None
     if (not player_joined):
         return redirect(url_for('home'))
+
+    if (request.method == "POST"):
+
+        voted_for_player_id = int(request.form["selected"])
+        voter_player_id = Player.query.filter(Player.user_id==current_user.id).first().id
+        vote_round = int(get_game_round())
+        cast_vote(voter_player_id, voted_for_player_id, vote_round)
+
+        return redirect(url_for('home'))
+    
+    game_state_setting = get_game_state()
+    game_round_setting = get_game_round()
+
+    round1_winner = determine_round_winner(1)
+    round2_winner = determine_round_winner(2)
+    round3_winner = determine_round_winner(3)
+
+    if (game_round_setting != "4"):
+        votable_players = Player.query.all()
+        if (round1_winner != None and int(game_round_setting) > 1):
+            votable_players.remove(determine_round_winner(1))
+        if (round2_winner != None and int(game_round_setting) > 2):
+            votable_players.remove(determine_round_winner(2))
+    else:
+        votable_players = [round1_winner, round2_winner, round3_winner]
+        
+    return render_template('vote.html',
+                           votable_players=votable_players,
+                           game_state_setting=game_state_setting,
+                           game_round_setting=game_round_setting)
 
 
 @app.route('/advance_game')

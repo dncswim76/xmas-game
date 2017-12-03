@@ -108,19 +108,19 @@
 
 {% if game_round_setting == "2" or game_round_setting == "3" or game_round_setting == "4"  %}
 <h3 class="display-1 text-center">
-  Round 1 Winner: {{round_winners[0].user.first_name}} {{ round_winners[0].user.first_name }}
+  Round 1 Winner: {{round_winners[0].user.first_name}} {{ round_winners[0].user.last_name }}</h3>
 {% endif %}
 
 {% if game_round_setting == "3" or game_round_setting == "4"  %}
 <h3 class="display-1 text-center">
-  Round 2 Winner: {{round_winners[1].user.first_name}} {{ round_winners[1].user.first_name }}
+  Round 2 Winner: {{round_winners[1].user.first_name}} {{ round_winners[1].user.last_name }}</h3>
   
 {% endif %}
 
 {% if game_round_setting == "4"  %}
 <h3 class="display-1 text-center">
-  Round 3 Winner: {{round_winners[2].user.first_name}} {{ round_winners[2].user.first_name }}
-  {% endif %}
+  Round 3 Winner: {{round_winners[2].user.first_name}} {{ round_winners[2].user.last_name }}</h3>
+ {% endif %}
 
 
 {% if game_state_setting  == "STATE_COLLABORATE" %}
@@ -136,11 +136,14 @@
   
 {% elif game_state_setting  == "STATE_GAME_OVER" and player_joined%}
 
-{% if round_winners[3].role==1 %}
+<div class="container-fluid">
+<div class="row">
+{% if winner_is_naughty %}
 <h1 class="display-1 text-center">NAUGHTY TEAM WINS!</h1>
 {% else %}
 <h1 class="display-1 text-center">NICE TEAM WINS!</h1>
 {% endif %}
+</div></div>
 
 <h2 class="display-1 text-center">{{round_winners[3].user.first_name}} {{round_winners[3].user.last_name}} is the new Santa!</h2>
 

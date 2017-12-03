@@ -95,3 +95,7 @@ class Player(db.Model):
     role = db.Column('player_role', db.Enum(Roles), nullable=False)
     user_id = db.Column('User', db.Integer, db.ForeignKey('users.id'))
     user = db.relationship(User, backref='users')
+    voted_round_one = db.Column('voted_round1', db.Text)
+    voted_round_two = db.Column('voted_round2', db.Text)
+    voted_round_three = db.Column('voted_round3', db.Text)
+    voted_round_four = db.Column('voted_round4', db.Text)

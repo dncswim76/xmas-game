@@ -32,6 +32,7 @@ def start_new_game():
     set_game_state('STATE_ENTER')
     set_game_round(str(1))
     Player.query.delete()
+    Vote.query.delete()
     db.session.commit()
     return None
 
@@ -62,6 +63,7 @@ def cast_vote(voter_player_id, voted_for_player_id, vote_round):
 
     voter_player = Vote.query.filter(Vote.voting_round==vote_round and Vote.player==voter_player_id).first()
 
+    #cast vote,  if didn't already vote
     if (voter_player is None):
         new_vote = Vote(player=voter_player_id, voting_round=vote_round, vote=voted_for_player_id)
         db.session.add(new_vote)
@@ -69,7 +71,22 @@ def cast_vote(voter_player_id, voted_for_player_id, vote_round):
     else:
         voter_player.vote=voted_for_player_id
         db.session.commit()
+
+    #log that this player voted in this round
+    player = Player.query.filter(Player.id==voter_player_id).first()
+    if (vote_round == 1):
+       player.voted_round_one="YES"
+    if (vote_round == 2):
+       player.voted_round_two="YES"
+    if (vote_round == 3):
+       player.voted_round_three="YES"
+    if (vote_round == 4):
+       player.voted_round_four="YES"
+    db.session.commit()
+
     return
+
+
         
 
 #returns an object to the player that won
@@ -79,14 +96,15 @@ def determine_round_winner(vote_round):
     all_votes_round = Vote.query.filter(Vote.voting_round==vote_round)
     vote_ids = []
 
-    print(all_votes_round)
-
     #get player id of all votes, then find most occuring player
-    for vote in all_votes_round:
-        vote_ids.append(vote.vote)
-    winner = max(set(vote_ids), key=vote_ids.count)
-    
-    return Player.query.filter(Player.id==winner).first()
+    for one_vote in all_votes_round:
+        vote_ids.append(one_vote.vote)
+    if (vote_ids != []):        
+        winner = max(set(vote_ids), key=vote_ids.count)
+        return Player.query.filter(Player.id==winner).first()
+    else:
+        return None
+        
     
 
 

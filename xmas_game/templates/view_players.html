@@ -9,11 +9,19 @@
     <tr>
         <th>#</th>
         <th>Player</th>
+	<th> Voted Round 1 </th>
+	<th> Voted Round 2 </th>
+	<th> Voted Round 3 </th>
+	<th> Voted Final </th>
     </tr>
     {% for player in players %}
     <tr>
         <td>{{ loop.index }}</td>
         <td>{{ player.user.first_name }} {{ player.user.last_name }}</td>
+	<td>{{ player.voted_round_one}}</td>
+	<td>{{ player.voted_round_two}}</td>
+	<td>{{ player.voted_round_three}}</td>
+	<td>{{ player.voted_round_four}}</td>
     </tr>
     {% endfor %}
 </table>
