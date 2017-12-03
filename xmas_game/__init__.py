@@ -31,5 +31,4 @@ from xmas_game.access_admin_views import AccessAdminView
 admin.add_view(AccessAdminView(models.User, db.session))
 admin.add_view(AccessAdminView(models.Setting, db.session))
 admin.add_view(AccessAdminView(models.Player, db.session))
-admin.add_view(AccessAdminView(models.Round, db.session))
 admin.add_view(AccessAdminView(models.Vote, db.session))

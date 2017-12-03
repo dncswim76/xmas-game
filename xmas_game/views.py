@@ -2,13 +2,13 @@ from flask import flash, g, jsonify, redirect, render_template, request, session
 from sqlalchemy import text
 from xmas_game import app, db
 
-from .models import Setting, Round, User, Vote, Player
+from .models import Setting, User, Vote, Player
+from .utils import *
 
 from flask_login import login_user, logout_user, current_user, login_required
 from xmas_game import app, db, login_manager
 
 from .forms import AccountCreateForm, LoginForm
-from .models import User
 
 
 @app.before_request
@@ -82,19 +82,28 @@ def home():
 
         player_joined = Player.query.filter(Player.user_id==current_user.id).first() is not None
         # this could be an error if the setting does not exist..
-        game_state_setting = Setting.query.filter(Setting.config_var=='game_state').first()
+        game_state_setting = get_game_state()
+        game_round_setting = get_game_round()
+
+        round_winners = [None, None, None, None]
+#        round_winners[0] = determine_round_winner(1)
+#        round_winners[1] = determine_round_winner(2)
+#        round_winners[2] = determine_round_winner(3)
+#        round_winners[3] = determine_round_winner(4)
         
         return render_template('home.html',
-                               game_state_setting=game_state_setting, 
-                               player_joined=player_joined)
+                               game_state_setting=game_state_setting,
+                               game_round_setting=game_round_setting, 
+                               player_joined=player_joined,
+                               round_winners=round_winners)
 
 @app.route('/join_game')
 def join_game():
                              
-    player_joined = Player.query.filter(Player.user_id==current_user.id).first()!=None
+    player_joined = Player.query.filter(Player.user_id==current_user.id).first() is not None
     
     if not player_joined:      
-        new_player = Player(user_id=current_user.id, role=Player.Roles.UNASSIGNED)
+        new_player = Player(user_id=current_user.id, role=Player.Roles.NICE)
         db.session.add(new_player)
         db.session.commit()
     
@@ -118,7 +127,19 @@ def my_role():
     #a role can be naughty or nice.  Naughty people will be shown a list of other
     #naughty people.  IF the game doesn't let people view a role, then the screen
     #indicates that the role viewing period has ended
-    pass
+
+    player_joined = Player.query.filter(Player.user_id==current_user.id).first() is not None
+    if (not player_joined):
+        return redirect(url_for('home'))
+
+    #find the player who is requesting his role
+    cur_player_naughty = Player.query.filter(Player.user_id==current_user.id).first().role==Player.Roles.NAUGHTY
+    naughty_players = Player.query.filter(Player.role==Player.Roles.NAUGHTY)
+    game_state = get_game_state()
+    
+    return render_template('my_role.html', cur_player_naughty=cur_player_naughty,
+                                           naughty_players=naughty_players,
+                                           game_state=game_state)
 
 
 @app.route('/vote')
@@ -127,4 +148,19 @@ def vote():
     #GET - lists all people available to select for this voting round. The users can only select
     #one person to cast a vote for.
     #POST - send the id of the person they are voting for
-    pass
+    
+    player_joined = Player.query.filter(Player.user_id==current_user.id).first() is not None
+    if (not player_joined):
+        return redirect(url_for('home'))
+
+
+@app.route('/advance_game')
+def advance_game():
+    advance_the_game()
+    return redirect(url_for('home'))
+
+@app.route('/new_game')
+def new_game():
+    start_new_game()
+    return redirect(url_for('home'))
+    

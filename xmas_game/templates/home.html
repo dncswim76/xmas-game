@@ -4,13 +4,150 @@
 
 <div class="container">
 
-{% if game_state_setting.value == "STATE_ENTER" and not player_joined %}
-  <h1 class="display-1 text-center"> Welcome! Click Below to join the game. </h1>
+  {% if game_state_setting == "STATE_ENTER" %}
+
+
+  {% if player_joined %}
+
+<div class="container-fluid">  
+<div class="row">  
+  <h1 class="display-1 text-center">
+    In a moment, your naughty or nice status will be revealed from Sir Jefferson Elf.
+  </h1>
+</div>
+</div>
+  {% endif %}
+
+<div class="container-fluid">
+<div class="row">  
+<h1 class="display-1 text-center">
+  Santa Over Thrown Through Elvish Uprising in North Pole
+</h1>
+</div></div>
+
+<h3 class="display-1 text-center">
+  After the recent uprisings in the middle east against dictators, the elve's of the north pole were
+  inspired to band together to overthrow a <strong>tyrannous dictator: Santa.</strong> Why might they rebel? Well it turns out Santa never paid the elves all these years, and they realized they were all <strong>a bunch of slaves.</strong></h3>
+<h3 class="display-1 text-center">
+  After the over throw of Santa, the eleves have come together led by <strong>Sir Washington Elf, Sir Jefferson Elf,
+  and Sir Adams Elf.</strong> They have determined that an <strong>election</strong> will take place for who will be the next Santa.
+</h3>
+<h3 class="display-1 text-center">
+  The election will go in <strong>four rounds</strong>.  There will be 3 nomination rounds where all elves will vote to nominate a
+  one person.  Of the <strong>3 nominees</strong>, a debate will be held for fellow elve's to choose who to vote for. All elves will then vote for a final person.
+</h3>
+<h3 class="display-1 text-center">
+  <strong>Complications arose however.</strong>  It turns out some of the elves were ... on the NAUGHTY list.  With the recent change in political climate of the northpole, they want to <strong>band together</strong> to try to elect a <strong>naughty person to be Santa.</strong>  The trouble is though, they don't have a majority! They must infiltrate the nice elves to convince them to vote for a naughty elf!
+</h3>
+
+<h3 class="display-1 text-center">
+  One of the naughty elves is currently trying <strong>steal the naughty list</strong> to band all naughty
+  people together. Unfortunately, since the nice elves behave, no one stole the nice list for them.
+</h3>
+
+
+{% if not player_joined %}
+<div class="container-fluid">
+<div class="row">
+
+<h3 class="display1 text-center">
+  <strong>Join the game, and see if Santa put you on the naughty list or
+  nice list.</strong>
+</h3>
+<div class="row text-center">
   <a href="{{ url_for('join_game')}}"><button type="button" class="btn">Join Game!</button></a>
-{% elif game_state_setting.value == "STATE_ENTER" and player_joined %}
-  <h1 class="display-1 text-center"> Please wait for game to begin! </h1>
+</div>  
+</div>     
+</div>
+
+{% endif %}
+
+<!---------------------------------------------------------------------------------------------------->
+
+{% elif game_state_setting  == "STATE_ENTER" and player_joined %}
+<div class="container-fluid">
+<div class="row">
+
+  <h1 class="display-1 text-center">
+    In a moment, your naughty or nice status will be revealed from Sir Jefferson Elf.
+  </h1>
+
+</div>
+</div>
+
+  
+
+<!---------------------------------------------------------------------------------------------------->
+
+{% elif game_state_setting  == "STATE_VIEW_ROLE" and player_joined%}
+
+<div class="container-fluid">
+<div class="row">
+
+  <h1 class="display-1 text-center">Sir Jefferson Elf has mailed each person whether they are on the naughty or nice list.</h1>
+
+</div>
+</div>
+  
+  
+<h2 class="display-1 text-center">Click on My Role above to see whether you are naughty or nice!</h2>
+
+<!---------------------------------------------------------------------------------------------------->
+
+{% elif (game_state_setting  == "STATE_COLLABORATE" or game_state_setting == "STATE_VOTE") and player_joined%}
+
+<div class="container-fluid">
+<div class="row">
+{% if game_round_setting == "4"  %}
+<h1 class="display-1 text-center">Current Round : Final </h1>
+{% else %}
+<h1 class="display-1 text-center">Current Round : {{game_round_setting}}</h1>
+{% endif %}
+</div></div>
+
+
+{% if game_round_setting == "2" or game_round_setting == "3" or game_round_setting == "4"  %}
+<h3 class="display-1 text-center">
+  Round 1 Winner: {{round_winners[0].user.first_name}} {{ round_winners[0].user.first_name }}
+{% endif %}
+
+{% if game_round_setting == "3" or game_round_setting == "4"  %}
+<h3 class="display-1 text-center">
+  Round 2 Winner: {{round_winners[1].user.first_name}} {{ round_winners[1].user.first_name }}
+  
+{% endif %}
+
+{% if game_round_setting == "4"  %}
+<h3 class="display-1 text-center">
+  Round 3 Winner: {{round_winners[2].user.first_name}} {{ round_winners[2].user.first_name }}
+  {% endif %}
+
+
+{% if game_state_setting  == "STATE_COLLABORATE" %}
+<h1 class="display-1 text-center">Work with other elves to determine who to nominate! You may cast you're vote if you are ready.</h1>
+{% endif %}
+
+{% if game_state_setting  == "STATE_VOTE" %}
+<h1 class="display-1 text-center">It's Time to Vote. Go to Vote page to cast your vote!</h1>
+{% endif %}
+
+
+<!---------------------------------------------------------------------------------------------------->
+  
+{% elif game_state_setting  == "STATE_GAME_OVER" and player_joined%}
+
+{% if round_winners[3].role==1 %}
+<h1 class="display-1 text-center">NAUGHTY TEAM WINS!</h1>
+{% else %}
+<h1 class="display-1 text-center">NICE TEAM WINS!</h1>
+{% endif %}
+
+<h2 class="display-1 text-center">{{round_winners[3].user.first_name}} {{round_winners[3].user.last_name}} is the new Santa!</h2>
+
+<!---------------------------------------------------------------------------------------------------->
+
 {% else %}  
-  <h1 class="display-1 text-center"> Sorry. Game Entrance has been closed.</h1>
+  <h1 class="display-1 text-center"> Bah-hum-bug! Game Entrance has been closed.</h1>
 {% endif %}  
   
 </div>

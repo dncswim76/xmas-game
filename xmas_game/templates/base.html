@@ -3,17 +3,30 @@
     <title>Holiday Game</title>
     <!-- CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+
+    <style>    
+      .container-fluid {
+      border-radius: 25px;
+      background: #73AD21;
+      padding: 20px; 
+      position: relative;
+      box-shadow: 0 0 15px black;
+      margin-top: 30px
+      }
+    </style>
+
     {% block css %}{% endblock %}
     <!-- JavaScript -->
     <script type=text/javascript>
         $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
     </script>
     {% block scripts %}{% endblock %}
-  </head>
-  <body>
+</head>
+  
+<body>
 
 <nav class="navbar navbar-default">
-  <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" href="{{ url_for('home')}}">Holiday Game</a>
     </div>
@@ -27,20 +40,9 @@
       <li><a href="{{ url_for('login')}}">Login</a></li>      
       {% endif %}
     </ul>
-  </div>
 </nav>
 
-   <div id="content" class="container-fluid">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul class=flashes>
-            {% for category, message in messages %}
-                <li class="{{ category }}"><h2>{{ message }}</h2></li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-        {% endwith %}
-        {% block content %}{% endblock %}
-    </div>
-  </body>
+{% block content %}{% endblock %}
+
+ </body>
 </html>

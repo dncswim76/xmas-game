@@ -67,17 +67,6 @@ class Setting(db.Model):
 
     def __repr__(self):
         return self.config_var
-
-
-class Round(db.Model):
-
-    __tablename__ = 'rounds'
-
-    id = db.Column(
-        'id', db.Integer, primary_key=True)
-    round_name = db.Column(
-        'round_name', db.String(50))
-
     
 class Vote(db.Model):
 
@@ -88,9 +77,9 @@ class Vote(db.Model):
     player = db.Column(
         'player_id', db.Integer, db.ForeignKey('players.id'))
     voting_round = db.Column(
-        'round_id', db.Integer, db.ForeignKey('rounds.id'))
+        'round_id', db.Integer)
     vote = db.Column(
-        'votee_id', db.Integer, db.ForeignKey('players.id'))
+        'vote_id', db.Integer, db.ForeignKey('players.id'))
 
         
 class Player(db.Model):
