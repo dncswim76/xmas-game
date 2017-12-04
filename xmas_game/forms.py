@@ -1,3 +1,4 @@
+from flask import flash
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, TextField
 from wtforms.validators import DataRequired, EqualTo, Length, ValidationError
@@ -46,5 +47,7 @@ class AccountCreateForm(FlaskForm):
     confirm = PasswordField('Repeat Password')
 
     def validate(self):
-        # validators already do all of the validation, so...
+        if len(User.query.filter(User.username == self.username.data).all()) != 0:
+            flash(u'Username already taken. Choose another username.', 'failure')
+            return False
         return True

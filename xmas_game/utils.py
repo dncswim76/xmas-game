@@ -65,7 +65,7 @@ def cast_vote(voter_player_id, voted_for_player_id, vote_round):
 
     #cast vote,  if didn't already vote
     if (voter_player is None):
-        new_vote = Vote(player=voter_player_id, voting_round=vote_round, vote=voted_for_player_id)
+        new_vote = Vote(player_id=voter_player_id, voting_round=vote_round, vote_id=voted_for_player_id)
         db.session.add(new_vote)
         db.session.commit()
     else:

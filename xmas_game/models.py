@@ -67,19 +67,6 @@ class Setting(db.Model):
 
     def __repr__(self):
         return self.config_var
-    
-class Vote(db.Model):
-
-    __tablename__ = 'votes'
-
-    id = db.Column(
-        'id', db.Integer, primary_key=True)
-    player = db.Column(
-        'player_id', db.Integer, db.ForeignKey('players.id'))
-    voting_round = db.Column(
-        'round_id', db.Integer)
-    vote = db.Column(
-        'vote_id', db.Integer, db.ForeignKey('players.id'))
 
         
 class Player(db.Model):
@@ -99,3 +86,19 @@ class Player(db.Model):
     voted_round_two = db.Column('voted_round2', db.Text)
     voted_round_three = db.Column('voted_round3', db.Text)
     voted_round_four = db.Column('voted_round4', db.Text)
+
+
+class Vote(db.Model):
+
+    __tablename__ = 'votes'
+
+    id = db.Column(
+        'id', db.Integer, primary_key=True)
+    player_id = db.Column(
+        'player_id', db.Integer, db.ForeignKey('players.id'))
+    player = db.relationship(Player, foreign_keys=player_id, backref='players')
+    voting_round = db.Column(
+        'round_id', db.Integer)
+    vote_id = db.Column(
+        'vote_id', db.Integer, db.ForeignKey('players.id'))
+    vote = db.relationship(Player, foreign_keys=vote_id, backref='voted_for_players')
