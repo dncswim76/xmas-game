@@ -8,7 +8,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     
-    <style>    
+    <style>
+      
       .container-fluid {
       border-radius: 25px;
       background: #73AD21;
@@ -21,6 +22,25 @@
       background: red;
       border-color: red;
       }
+
+      #navbar-item {
+      color: black;
+      }
+
+      #brand-top{
+      color: black;
+      }
+
+      h1 {
+      color: black;
+      }
+      h2 {
+      color: black;
+      }
+      h3 {
+      color: black;
+      }
+
       
     body { background: red !important; }
     </style>
@@ -46,17 +66,17 @@
 	      <span class="icon-bar"></span>
 	      <span class="icon-bar"></span>
 	    </button>
-	    <a class="navbar-brand" href="{{ url_for('home')}}">2017 North Pole Election</a>
+	    <a class="navbar-brand" id="brand-top" href="{{ url_for('home')}}">2017 North Pole Election</a>
 	  </div>
 
 	  <!-- Collect the nav links, forms, and other content for toggling -->
 	  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	    <ul class="nav navbar-nav">
 	      {% if session.authenticated %}
-	      <li><a href="{{ url_for('view_players')}}">View Players</a></li>
-	      <li><a href="{{ url_for('my_role')}}">My Role</a></li>
-	      <li><a href="{{ url_for('vote')}}">Vote</a></li>
-	      <li><a href="{{ url_for('logout')}}">Logout</a></li>
+	      <li><a id="navbar-item" href="{{ url_for('view_players')}}">View Players</a></li>
+	      <li><a id="navbar-item" href="{{ url_for('my_role')}}">My Role</a></li>
+	      <li><a id="navbar-item" href="{{ url_for('vote')}}">Vote</a></li>
+	      <li><a id="navbar-item" href="{{ url_for('logout')}}">Logout</a></li>
              {% endif %}
 	    </ul>
 	  </div><!-- /.navbar-collapse -->
@@ -67,11 +87,14 @@
 <div id="content">
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
+    <div class="container">
+       <div class="container-fluid text-center">
         <ul class=flashes>
         {% for category, message in messages %}
-            <li class="{{ category }}">{{ message }}</li>
+            <h1 class="display-1 text-center">{{ message }}</h1>
         {% endfor %}
         </ul>
+    </div></div> 
     {% endif %}
     {% endwith %}
     {% block content %}{% endblock %}

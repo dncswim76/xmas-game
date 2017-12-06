@@ -5,8 +5,8 @@ from wtforms.validators import DataRequired, EqualTo, Length, ValidationError
 from .models import User
 
 class LoginForm(FlaskForm):
-    username = TextField('username', validators=[DataRequired()])
-    password = PasswordField('password', validators=[DataRequired()])
+    username = TextField('username', validators=[DataRequired(), Length(min=4, max=25)])
+    password = PasswordField('password', validators=[DataRequired(), Length(min=1, max=25)])
 
     def __init__(self, *args, **kwargs):
         FlaskForm.__init__(self, *args, **kwargs)

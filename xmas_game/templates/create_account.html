@@ -2,13 +2,18 @@
 
 {% block content %}
 {% from "_formhelpers.html" import render_field %}
-<form method=post>
-  <dl>
+
+<div class="container">
+<div class="container-fluid">
+  <h2 class="display-1 text-center">Create an Account</h2>
+  <form method="post" class="text-center">
+
     {{ render_field(form.username) }}
-	{{ render_field(form.first_name) }}
-	{{ render_field(form.last_name) }}
+    {{ render_field(form.first_name) }}
+    {{ render_field(form.last_name) }}
     {{ render_field(form.password) }}
     {{ render_field(form.confirm) }}
+    
   </dl>
   <p><input type=submit value=CreateAccount>
 </form>
