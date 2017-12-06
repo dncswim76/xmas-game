@@ -38,7 +38,7 @@
    `$ python run.py runserver`
 
 
-##To deploy on apache2:
+## To deploy on apache2:
 
 1. Install Appache:
 `$ apt-get install apache2`
