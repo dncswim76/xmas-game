@@ -32,3 +32,7 @@ admin.add_view(AccessAdminView(models.User, db.session))
 admin.add_view(AccessAdminView(models.Setting, db.session))
 admin.add_view(AccessAdminView(models.Player, db.session))
 admin.add_view(AccessAdminView(models.Vote, db.session))
+
+#this is needed to work with Apache WSGI framework
+if __name__=="__main__":
+    app.run()
