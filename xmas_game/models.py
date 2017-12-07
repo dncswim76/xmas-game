@@ -96,9 +96,7 @@ class Vote(db.Model):
         'id', db.Integer, primary_key=True)
     player_id = db.Column(
         'player_id', db.Integer, db.ForeignKey('players.id'))
-    player = db.relationship(Player, foreign_keys=player_id, backref='players')
     voting_round = db.Column(
         'round_id', db.Integer)
     vote_id = db.Column(
         'vote_id', db.Integer, db.ForeignKey('players.id'))
-    vote = db.relationship(Player, foreign_keys=vote_id, backref='voted_for_players')

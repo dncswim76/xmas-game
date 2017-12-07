@@ -98,7 +98,7 @@ def determine_round_winner(vote_round):
 
     #get player id of all votes, then find most occuring player
     for one_vote in all_votes_round:
-        vote_ids.append(one_vote.vote)
+        vote_ids.append(one_vote.vote_id)
     if (vote_ids != []):        
         winner = max(set(vote_ids), key=vote_ids.count)
         return Player.query.filter(Player.id==winner).first()
