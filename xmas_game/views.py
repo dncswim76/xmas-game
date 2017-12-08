@@ -196,11 +196,20 @@ def vote():
 
 @app.route('/advance_game')
 def advance_game():
-    advance_the_game()
+    if current_user.username == "dncswim76":
+        advance_the_game()
     return redirect(url_for('home'))
 
 @app.route('/new_game')
 def new_game():
-    start_new_game()
+
+    if current_user.username == "dncswim76":
+        start_new_game()
     return redirect(url_for('home'))
-    
+
+#quick hack for admin game controller
+@app.route('/admin_dave')
+def admin_dave():
+    if current_user.username == "dncswim76":
+           return render_template('admin_dave.html')
+    return redirect(url_for('home'))
