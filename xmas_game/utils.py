@@ -43,7 +43,7 @@ def assign_roles():
     #get all players and determine the number of naughty players
     all_players = Player.query.all()
     num_players = len(all_players)
-    percent_naughty = int(get_percent_naughty())/100
+    percent_naughty = float(get_percent_naughty())/100
     num_naughty = int(num_players * percent_naughty)
 
     i = num_naughty
